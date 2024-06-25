@@ -40,8 +40,8 @@ class ProfilePage extends StatelessWidget {
                               children: [
                                 Obx(
                                   () => controller.pickedImage.value.path != ''
-                                      ? ClipRRect(
-                                          borderRadius: BorderRadius.circular(50),
+                                      ? CircleAvatar(
+                                          radius: 50,
                                           child: Image.file(
                                             File(controller.pickedImage.value.path),
                                             fit: BoxFit.cover,

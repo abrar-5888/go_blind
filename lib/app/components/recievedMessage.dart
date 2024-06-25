@@ -6,6 +6,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:go_blind/app/data/models/conversationMode.dart';
 import 'package:go_blind/utils/global.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:translator/translator.dart';
 
 class ReceivedMessage extends StatefulWidget {
   final String userName;
@@ -23,17 +24,21 @@ class ReceivedMessage extends StatefulWidget {
 
 class _ReceivedMessageState extends State<ReceivedMessage> {
   final FlutterTts flutterTts = FlutterTts();
+  GoogleTranslator translator = GoogleTranslator();
+
   bool playing = false;
   Future<void> speak(String text) async {
-    setState(() {
-      playing = true;
-    });
-    await flutterTts.setLanguage(locale);
-    await flutterTts.setPitch(1.0);
-    await flutterTts.speak(text);
-    flutterTts.setCompletionHandler(() {
+    translator.translate(text, to: locale).then((value) async {
       setState(() {
-        playing = false;
+        playing = true;
+      });
+      await flutterTts.setLanguage('en_US');
+      await flutterTts.setPitch(1.0);
+      await flutterTts.speak(value.text);
+      flutterTts.setCompletionHandler(() {
+        setState(() {
+          playing = false;
+        });
       });
     });
   }

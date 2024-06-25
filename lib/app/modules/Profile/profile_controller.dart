@@ -105,11 +105,11 @@ class ProfileController extends GetxController {
 
     await prefs.setString('user', userJson);
     if (users.language.toLowerCase() == 'urdu') {
-      locale = 'ur_PK';
+      locale = 'ur';
     } else if (users.language.toLowerCase() == 'chinese') {
-      locale = 'zh_CN';
+      locale = 'zh-cn';
     } else {
-      locale = 'en_US';
+      locale = 'en';
     }
     CustomDialog.closeProgressDialog();
     CustomSnackBar.showCustomToast(message: 'Profile Updated');

@@ -27,11 +27,11 @@ class _SplashViewState extends State<SplashView> {
       if (userJson != null) {
         var data = jsonDecode(userJson);
         if (data['language'].toLowerCase() == 'urdu') {
-          locale = 'ur_PK';
+          locale = 'ur';
         } else if (data['language'].toLowerCase() == 'chinese') {
-          locale = 'zh_CN';
+          locale = 'zh-cn';
         } else {
-          locale = 'en_US';
+          locale = 'en';
         }
         Get.offAllNamed(Routes.BOTTOMBAR);
       } else {
