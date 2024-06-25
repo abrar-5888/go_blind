@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "695973536598",
+    "project_id": "fyp2-d60ec",
+    "storage_bucket": "fyp2-d60ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:695973536598:android:8455eced88a818e03decf7",
+        "android_client_info": {
+          "package_name": "com.example.go_blind"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzVtBr4cEUGNbn0eUyqzureu7DxZ458qU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
