@@ -164,7 +164,7 @@ class LoginPage extends StatelessWidget {
                                   Get.toNamed(Routes.SIGNUP);
                                 },
                                 child: Text(
-                                  "Already have an account ?",
+                                  "Don't have an account ?",
                                   style: MyStyles.smallPoppinsBlack.copyWith(color: ThemeColors.seeGreen),
                                 )),
                           ),

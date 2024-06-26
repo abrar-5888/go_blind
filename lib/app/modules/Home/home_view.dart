@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_blind/app/components/custom_appbar.dart';
+import 'package:go_blind/app/data/api/firebase_nodes.dart';
 import 'package:go_blind/app/data/models/message_model.dart';
 import 'package:go_blind/app/modules/Home/home_controller.dart';
 import 'package:go_blind/app/modules/chat/chat_view.dart';
@@ -49,6 +51,9 @@ class HomePage extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 2.0),
                         child: InkWell(
+                          onLongPress: () async {
+                            await FirebaseFirestore.instance.collection(FirebaseNodes.MESSAGES).doc(message.firebaseKey!).delete();
+                          },
                           onTap: () {
                             Get.to(ChatView(
                               receiverId: otherUserId,

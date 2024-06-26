@@ -11,6 +11,8 @@ class HomeController extends GetxController {
   RxList<UsersModel> users = <UsersModel>[].obs;
   RxBool isLoading = false.obs;
   RxList<MessagesModels> messages = <MessagesModels>[].obs;
+  RxBool showDelButton=false.obs;
+  
 
   @override
   void onInit() {
