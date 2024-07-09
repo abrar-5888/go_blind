@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 2.0),
                         child: InkWell(
                           onLongPress: () async {
-                            await FirebaseFirestore.instance.collection(FirebaseNodes.MESSAGES).doc(message.firebaseKey!).delete();
+                            // await FirebaseFirestore.instance.collection(FirebaseNodes.MESSAGES).doc(message.firebaseKey!).delete();
                           },
                           onTap: () {
                             Get.to(ChatView(

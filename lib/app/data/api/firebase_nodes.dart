@@ -5,4 +5,5 @@ class FirebaseNodes {
 
   static const USERS = "users";
   static const MESSAGES = "messages";
+  static const CALLS = "calls";
 }

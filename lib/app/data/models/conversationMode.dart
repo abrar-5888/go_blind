@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 class ConseverationModel {
-  final String message;
+  String message;
   final String senderId;
 
   ConseverationModel({required this.message, required this.senderId});

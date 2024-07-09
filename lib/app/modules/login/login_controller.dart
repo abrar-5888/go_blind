@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_blind/app/components/custom_dialog.dart';
@@ -15,6 +17,7 @@ class LoginController extends GetxController {
   var idController = TextEditingController();
   var passwordController = TextEditingController();
   late SharedPreferences prefs;
+  RxString fcmtoken = ''.obs;
 
   @override
   void onInit() {
@@ -32,6 +35,18 @@ class LoginController extends GetxController {
       return false;
     }
     return true;
+  }
+
+  Future<void> getFCMToken(String uid) async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    String? token = await messaging.getToken();
+    if (token!.isNotEmpty) {
+      fcmtoken.value = token;
+    }
+    FirebaseFirestore.instance.collection('FCMtokens').doc(uid).set({'FCMtoken': fcmtoken, 'uid': uid});
+
+    print('FCM Token: $fcmtoken');
   }
 
   void login(String email, String password) async {
@@ -59,6 +74,10 @@ class LoginController extends GetxController {
 
         await prefs.setString('user', userJson);
 
+        name = user.name;
+        email = user.email;
+        image = user.pictureUrl;
+        getFCMToken(FirebaseAuth.instance.currentUser!.uid);
         Get.offAllNamed(Routes.BOTTOMBAR);
       });
     } catch (e) {

@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_blind/app/modules/Call/call_view.dart';
 import 'package:go_blind/app/modules/Home/home_view.dart';
 import 'package:go_blind/app/modules/Profile/profile_view.dart';
 import 'package:go_blind/config/theme/themeColors.dart';
@@ -9,29 +10,29 @@ class BottomBarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pageController = PageController(initialPage: 0);
+    final pageController = PageController(initialPage: 1);
 
     return Scaffold(
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         children: const <Widget>[
-          // CallsPage(),
+          CallsPage(),
           HomePage(), ProfilePage()
         ],
       ),
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.white,
-        index: 0,
+        index: 1,
         buttonBackgroundColor: ThemeColors.seeGreen,
         color: ThemeColors.seeGreen,
         height: 65,
         items: const <Widget>[
-          // Icon(
-          //   Icons.call,
-          //   size: 30,
-          //   color: Colors.white,
-          // ),
+          Icon(
+            Icons.call,
+            size: 30,
+            color: Colors.white,
+          ),
           Icon(
             Icons.home,
             size: 30,

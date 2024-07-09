@@ -1,8 +1,5 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-// import 'package:flutter_tts/flutter_tts.dart';
 import 'package:go_blind/app/data/models/conversationMode.dart';
 import 'package:go_blind/utils/global.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,29 +21,43 @@ class ReceivedMessage extends StatefulWidget {
 
 class _ReceivedMessageState extends State<ReceivedMessage> {
   final FlutterTts flutterTts = FlutterTts();
-  GoogleTranslator translator = GoogleTranslator();
-
+  final GoogleTranslator translator = GoogleTranslator();
   bool playing = false;
+  String translatedMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    translateMessage();
+  }
+
+  Future<void> translateMessage() async {
+    final message = widget.message.message;
+    final translation = await translator.translate(message, to: locale); // Change 'en' to your desired locale
+    setState(() {
+      translatedMessage = translation.text;
+    });
+  }
+
   Future<void> speak(String text) async {
-    translator.translate(text, to: locale).then((value) async {
+    setState(() {
+      playing = true;
+    });
+    await flutterTts.setLanguage('en_US');
+    await flutterTts.setPitch(1.0);
+    await flutterTts.speak(text);
+    flutterTts.setCompletionHandler(() {
       setState(() {
-        playing = true;
-      });
-      await flutterTts.setLanguage('en_US');
-      await flutterTts.setPitch(1.0);
-      await flutterTts.speak(value.text);
-      flutterTts.setCompletionHandler(() {
-        setState(() {
-          playing = false;
-        });
+        playing = false;
       });
     });
   }
 
   Future<void> pause() async {
     await flutterTts.pause();
-
-    playing = false;
+    setState(() {
+      playing = false;
+    });
   }
 
   @override
@@ -63,47 +74,51 @@ class _ReceivedMessageState extends State<ReceivedMessage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Container(
-                constraints: const BoxConstraints(
-                  maxWidth: 270.0,
-                ),
-                padding: const EdgeInsets.all(12.0),
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 10.0,
-                      spreadRadius: 0,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(0),
-                    topRight: Radius.circular(12.0),
-                    bottomLeft: Radius.circular(12.0),
-                    bottomRight: Radius.circular(12.0),
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Container(
+              constraints: const BoxConstraints(
+                maxWidth: 270.0,
+              ),
+              padding: const EdgeInsets.all(12.0),
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 10.0,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 3),
                   ),
-                  color: const Color.fromARGB(217, 255, 255, 255),
+                ],
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(0),
+                  topRight: Radius.circular(12.0),
+                  bottomLeft: Radius.circular(12.0),
+                  bottomRight: Radius.circular(12.0),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.userName, style: const TextStyle(color: Colors.red, fontSize: 10)),
-                    const SizedBox(height: 10),
-                    Text(
-                      widget.message.message,
-                      maxLines: 10,
-                      style: GoogleFonts.karla(fontSize: 15, color: Colors.black),
-                    ),
-                  ],
-                ),
-              )),
+                color: const Color.fromARGB(217, 255, 255, 255),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.userName,
+                    style: const TextStyle(color: Colors.red, fontSize: 10),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    translatedMessage.isEmpty ? widget.message.message : translatedMessage,
+                    maxLines: 10,
+                    style: GoogleFonts.karla(fontSize: 15, color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+          ),
           IconButton(
             onPressed: () {
-              if (playing == false) {
-                speak(widget.message.message);
+              if (!playing) {
+                speak(translatedMessage.isEmpty ? widget.message.message : translatedMessage);
               } else {
                 pause();
               }
